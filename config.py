@@ -25,11 +25,10 @@ TOPICS = {
     }
 }
 
-
-
 # E-posta Konfigürasyonu (Ortam değişkenlerinden alınır)
-SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+SMTP_SERVER = os.getenv("SMTP_SERVER") or "smtp.gmail.com"
+raw_port = os.getenv("SMTP_PORT", "").strip()
+SMTP_PORT = int(raw_port) if raw_port.isdigit() else 587
 SENDER_EMAIL = os.getenv("SENDER_EMAIL", "")
 SENDER_PASSWORD = os.getenv("SENDER_PASSWORD", "")
 RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL", "")
@@ -37,6 +36,6 @@ RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL", "")
 # Gemini API Key
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 
-# Taranacak gün sayısı (Varsayılan günlük 1 gün, haftalık için 7 gün)
+# Taranacak gün sayısı (Varsayılan günlük 2 gün, haftalık için 7 gün)
 LOOKBACK_DAYS_DAILY = 2
 LOOKBACK_DAYS_WEEKLY = 7
