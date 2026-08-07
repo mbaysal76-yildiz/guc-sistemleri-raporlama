@@ -1,29 +1,31 @@
 import os
 
-# Konu Başlıkları ve Anahtar Kelimeler
+# Konu Başlıkları ve Anahtar Kelimeler (Nokta Atışı Teknik Terimler)
 TOPICS = {
     "protection": {
         "title": "Akıllı Şebekelerde Koruma Sistemleri",
-        "description": "Smart Grid Protection, Microgrid Protection, Adaptive Protection & WAMPAC",
-        "arxiv_query": 'cat:eess.SY AND (abs:"smart grid protection" OR abs:"microgrid protection" OR abs:"adaptive protection")',
-        "openalex_query": "smart grid protection OR microgrid protection OR adaptive protection smart grid",
-        "keywords": ["smart grid protection", "microgrid protection", "adaptive protection", "wide area protection", "wampac", "relaying smart grid"]
+        "description": "Smart Grid Protection, Microgrid Protection, Adaptive Relaying & WAMPAC",
+        "arxiv_query": 'cat:eess.SY AND ("smart grid protection" OR "microgrid protection" OR "adaptive protection")',
+        "openalex_query": '"smart grid protection" OR "microgrid protection" OR "adaptive protection smart grid"',
+        "keywords": ["smart grid protection", "microgrid protection", "adaptive protection", "wide area protection", "wampac"]
     },
     "p2p_trading": {
         "title": "Elektrik Enerji Ticareti ve P2P",
         "description": "Peer-to-Peer Energy Trading, Transactive Energy & Local Energy Markets",
-        "arxiv_query": 'cat:eess.SY AND (abs:"peer-to-peer energy" OR abs:"p2p energy" OR abs:"transactive energy")',
-        "openalex_query": "peer-to-peer energy trading OR p2p energy trading OR transactive energy OR local energy market",
-        "keywords": ["peer-to-peer energy", "p2p energy trading", "transactive energy", "local energy market", "blockchain energy"]
+        "arxiv_query": 'cat:eess.SY AND ("peer-to-peer energy trading" OR "p2p energy trading" OR "transactive energy")',
+        "openalex_query": '"peer-to-peer energy trading" OR "p2p energy trading" OR "transactive energy market"',
+        "keywords": ["peer-to-peer energy trading", "p2p energy trading", "transactive energy", "local energy market"]
     },
     "ev_grid": {
         "title": "Elektrikli Araçların Şebekeye Etkileri",
-        "description": "EV Integration, Vehicle-to-Grid (V2G), Charging Infrastructure & Grid Impacts",
-        "arxiv_query": 'cat:eess.SY AND (abs:"electric vehicle" OR abs:"v2g" OR abs:"vehicle-to-grid") AND (abs:"grid" OR abs:"power system")',
-        "openalex_query": "electric vehicle grid impact OR vehicle to grid OR V2G smart grid OR EV charging grid integration",
-        "keywords": ["electric vehicle grid", "vehicle to grid", "v2g", "ev charging impact", "ev fleet grid"]
+        "description": "EV Grid Integration, Vehicle-to-Grid (V2G) & Charging Impacts",
+        "arxiv_query": 'cat:eess.SY AND ("vehicle-to-grid" OR "v2g" OR "electric vehicle grid integration")',
+        "openalex_query": '"vehicle to grid" OR "v2g smart grid" OR "electric vehicle grid integration"',
+        "keywords": ["electric vehicle grid impact", "vehicle to grid", "v2g", "ev grid integration"]
     }
 }
+
+
 
 # E-posta Konfigürasyonu (Ortam değişkenlerinden alınır)
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")

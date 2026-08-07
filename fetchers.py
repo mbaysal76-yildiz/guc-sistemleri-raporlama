@@ -40,11 +40,9 @@ class PaperFetcher:
         """OpenAlex API üzerinden makaleleri çeker."""
         papers = []
         try:
-            from_date = self.cutoff_date.strftime("%Y-%m-%d")
             url = "https://api.openalex.org/works"
             params = {
                 "search": query,
-                "filter": f"from_publication_date:{from_date}",
                 "sort": "publication_date:desc",
                 "per_page": max_results
             }
@@ -85,8 +83,9 @@ class PaperFetcher:
             logging.error(f"OpenAlex çekme hatası: {e}")
         return papers
 
+
     def fetch_for_topic(self, topic_config: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Bir konu için tüm kaynaklardan makaleleri toplar ve tekilleştirir."""
+        """Bir konu için tüm kaynaklardan makaleleri toplar, özetsiz olanları eler ve tekilleştirir."""
         all_papers = []
         
         # arXiv
@@ -97,11 +96,16 @@ class PaperFetcher:
         openalex_papers = self.fetch_openalex(topic_config["openalex_query"])
         all_papers.extend(openalex_papers)
         
-        # Başlığa göre çift kayıtları temizle (Deduplication)
+        # Başlığa göre çift kayıtları temizle ve özetsiz olanları ele
         unique_papers = {}
         for paper in all_papers:
             clean_title = paper["title"].lower().strip()
+            summary = paper.get("summary", "").strip()
+            # Özet "Özet bulunamadı" ise veya 50 karakterden kısaysa ele
+            if not summary or "Özet bulunamadı" in summary or len(summary) < 50:
+                continue
             if clean_title not in unique_papers:
                 unique_papers[clean_title] = paper
 
         return list(unique_papers.values())
+
