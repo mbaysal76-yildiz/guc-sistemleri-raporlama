@@ -71,6 +71,9 @@ class Mailer:
                         {summary_items}
                     </ul>
                     <div class="key-takeaway">💡 <b>Önemli Katkısı:</b> {paper.get('key_takeaway', '')}</div>
+                    <div class="personal-relevance" style="background: #fdf4ff; color: #a21caf; padding: 8px 12px; border-radius: 4px; font-size: 13px; font-weight: 500; margin-top: 8px; border-left: 3px solid #d946ef;">
+                        🔍 <b>Araştırma Profilinizle İlişkisi:</b> {paper.get('personal_relevance', 'Analiz edilemedi.')}
+                    </div>
                 </div>
                 """
 
@@ -83,6 +86,7 @@ class Mailer:
         </html>
         """
         return html
+
 
     def build_weekly_html(self, topic_results: Dict[str, Dict[str, Any]], weekly_insights: Dict[str, Any]) -> str:
         """Haftalık istatistik ve tez önerisi raporu için HTML e-posta gövdesi oluşturur."""

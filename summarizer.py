@@ -5,6 +5,11 @@ from typing import List, Dict, Any
 from google import genai
 from google.genai import types
 
+try:
+    from my_research_profile import RESEARCH_PROFILE
+except ImportError:
+    RESEARCH_PROFILE = "Araştırma profili bulunamadı."
+
 class PaperSummarizer:
     def __init__(self, api_key: str = None):
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
@@ -34,15 +39,24 @@ class PaperSummarizer:
                     "Bulgu: Detaylar makale tam metninde mevcuttur."
                 ]
                 paper["key_takeaway"] = f"{topic_name} alanında güncel bir akademik çalışma."
+                paper["personal_relevance"] = "API Key bulunamadığı için profilleme yapılamadı."
                 summarized_papers.append(paper)
                 continue
 
             prompt = f"""
             Sen Güç Sistemleri ve Akıllı Şebekeler alanında uzman bir akademisyensin.
             Aşağıdaki makaleyi dikkatle oku ve Türkçe olarak özetle.
+            
+            Ayrıca benim "Kişisel Araştırma Profilimi" kullanarak, bu makalenin benim çalışmalarımla (yöntem, konu, problem açısından) nasıl örtüştüğünü veya nasıl bir alternatif/katkı sunduğunu 1-2 cümleyle "personal_relevance" alanında açıkla.
 
+            --- BENİM ARAŞTIRMA PROFİLİM ---
+            {RESEARCH_PROFILE}
+            --------------------------------
+
+            --- İNCELENECEK MAKALE ---
             Makale Başlığı: {paper['title']}
             Özet (Abstract): {paper['summary']}
+            --------------------------
 
             Lütfen YALNIZCA aşağıdaki JSON formatında yanıt ver:
             {{
@@ -52,7 +66,8 @@ class PaperSummarizer:
                     "Kullanılan yöntem, algoritma veya model",
                     "Elde edilen ana bulgular ve sonuçlar"
                 ],
-                "key_takeaway": "Bu çalışmanın sektöre/literatüre getirdiği en önemli yenilik veya katkı."
+                "key_takeaway": "Bu çalışmanın sektöre/literatüre getirdiği en önemli yenilik veya katkı.",
+                "personal_relevance": "Kişisel araştırma profilimle (özellikle derin öğrenme, ada modu, vb. odak noktalarımla) olan teorik/metodolojik ilişkisi veya farklılığı."
             }}
             """
 
@@ -68,11 +83,13 @@ class PaperSummarizer:
                 paper["tr_title"] = res_data.get("tr_title", paper["title"])
                 paper["tr_summary"] = res_data.get("tr_summary", [paper["summary"][:300]])
                 paper["key_takeaway"] = res_data.get("key_takeaway", "Çalışmanın katkısı detaylandırıldı.")
+                paper["personal_relevance"] = res_data.get("personal_relevance", "Doğrudan bir ilişki kurulamadı.")
             except Exception as e:
                 logging.error(f"Gemini özetleme hatası ({paper['title']}): {e}")
                 paper["tr_title"] = paper["title"]
                 paper["tr_summary"] = [paper["summary"][:300] + "..."]
                 paper["key_takeaway"] = "Makale özetinden türetilen akademik çalışma."
+                paper["personal_relevance"] = "Özetleme hatası nedeniyle analiz yapılamadı."
 
             summarized_papers.append(paper)
         return summarized_papers
