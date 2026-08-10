@@ -67,6 +67,11 @@ class Mailer:
                     <a class="paper-title" href="{paper['url']}" target="_blank">📌 {paper.get('tr_title', paper['title'])}</a>
                     <div class="orig-title">Orijinal: {paper['title']}</div>
                     <div class="meta">👨‍🔬 Yazarlar: {authors_str} | 📅 Tarih: {paper.get('published', '')} | 🌐 Kaynak: {paper.get('source', '')}</div>
+                    
+                    <div style="background: #f1f5f9; padding: 10px 15px; border-radius: 4px; font-size: 13px; color: #475569; margin-bottom: 10px; font-style: italic; border-left: 3px solid #94a3b8;">
+                        <b>📖 Tam Özet (Çeviri):</b> {paper.get('tr_full_abstract', 'Özet çevirisi mevcut değil.')}
+                    </div>
+
                     <ul class="summary-list">
                         {summary_items}
                     </ul>
@@ -76,6 +81,7 @@ class Mailer:
                     </div>
                 </div>
                 """
+
 
         html += f"""
                 <div class="footer">
